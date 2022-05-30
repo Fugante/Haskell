@@ -32,6 +32,6 @@ localMaxima l = [getMax n l | n <- [0..length l - 3], getMax (n + 1) l == getMax
 addStar :: String -> String
 addStar s = s ++ "*"
 
-plotPoints :: [Integer] -> [String] -> [String]
+plotPoints :: [Integer] -> [String]
 plotPoints [] _ = []
 plotPoints _ [] = []
