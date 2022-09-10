@@ -12,7 +12,7 @@ parseMessage msg = case words msg of
     _ -> Unknown msg
 
 parse :: String -> [LogMessage]
-parse text = [parseMessage line | line <- (lines text)]
+parse text = [parseMessage line | line <- lines text]
 
 insert :: LogMessage -> MessageTree -> MessageTree
 insert (Unknown _) msgt = msgt
@@ -27,7 +27,7 @@ build (x:xs) = insert x (build xs)
 
 inOrder :: MessageTree -> [LogMessage]
 inOrder Leaf = []
-inOrder (Node left logmsg right) = (inOrder left) ++ [logmsg] ++ (inOrder right)
+inOrder (Node left logmsg right) = inOrder left ++ [logmsg] ++ inOrder right
 
 isSeriousError :: LogMessage -> Bool
 isSeriousError (LogMessage (Error level) _ _)
@@ -40,5 +40,5 @@ whatWentWrong [] = []
 whatWentWrong logs = 
     [
         msg |
-        (LogMessage _ _ msg) <- inOrder . build . (filter isSeriousError) $ logs
+        (LogMessage _ _ msg) <- inOrder . build . filter isSeriousError $ logs
     ]
