@@ -31,3 +31,318 @@ eftChar a b = go a b []
             | charf < char0 = c
             | otherwise = go char0 (pred charf) (charf : c)
 ```
+
+
+## Excercise: Thy Fearful Symmetry
+
+1.
+    ```
+    myWords :: String -> [String]
+    myWords string = go string []
+        where
+            go text wordsList
+                | text == "" = wordsList
+                | otherwise = go (dropFstWord text) (wordsList ++ [takeFstWord text])
+            dropFstWord text = dropWhile (==' ') $ dropWhile (/=' ') text
+            takeFstWord text = takeWhile (/=' ') text
+    ```
+
+2.
+    ```
+    myLines :: String -> [String]
+    myLines string = go string []
+        where
+            go text linesList
+                | text == "" = linesList
+                | otherwise = go (dropFstLine text) (linesList ++ [takeFstLine text])
+            dropFstLine text = dropWhile (=='\n') $ dropWhile (/='\n') text
+            takeFstLine text = takeWhile (/='\n') text
+    ```
+3.
+    ```
+    takeFst :: Char -> String -> String
+    takeFst delimiter = takeWhile (/=delimiter)
+
+    dropFst :: Char -> String -> String
+    dropFst delimiter = dropWhile (==delimiter) . dropWhile (/=delimiter)
+
+    splitText :: Char -> String -> [String]
+    splitText delimiter text = go text []
+        where
+            go string stringsList = case string of
+                "" -> stringsList
+                _ -> go (dropFst delimiter string) (stringsList ++ [takeFst delimiter string])
+    ```
+
+
+## Excercises: Comprehend Thy Lists
+
+```
+mySqr = [x^2 | x <- [1..10]]
+```
+1.
+    ```
+    [x | x <- mySqr, rem x 2 == 0]
+    ```
+    Result: [4, 16, 36, 64, 100]
+
+2.
+    ```
+    [(x, y) | x <- mySqr, y <- mySqr, x < 50, y > 50]
+    ```
+    Result: [
+        (1,64), (1,81), (1,100), (4,64), (4,81), (4,100),
+        (9,64), (9,81), (9,100), (16,64), (16,81), (16,100),
+        (25,64), (25,81), (25,100), (36, 64), (36,81), (36,100),
+        (49,64), (49,81), (49,100)
+    ]
+3.
+    ```
+    take 5 [ (x, y) | x <- mySqr, y <- mySqr, x < 50, y > 50 ]
+    ```
+    Result: [(1,64), (1,81), (1,100), (4,64), (4,81)]
+
+
+## Exercises: Square Cube
+
+```
+mySqr = [x^2 | x <- [1..5]]
+myCube = [y^3 | y <- [1..5]]
+```
+1.
+    ```
+    [(x, y) | x <- mySqr, y <- myCube]
+    ```
+2.
+    ```
+    [(x, y) | x <- mySqr, y <- myCube, x < 50 && y < 50]
+    ```
+3.
+    ```
+    lenght [(x, y) | x <- mySqr, y <- myCube, x < 50 && y < 50]
+    ```
+
+
+## Exercises: Bottom Madness
+
+### Will it blow up?
+
+Will the following expressions return a value or be ⊥?
+
+1.
+    ```
+    [x^y | x <- [1..5], y <- [2, undefined]]
+    ```
+    A: Bottom
+
+2. 
+    ```
+    take 1 $ [x^y | x <- [1..5], y <- [2, undefined]]
+    ```
+    A: Will return [1]
+
+3. 
+    ```
+    sum [1, undefined, 3]
+    ```
+    A: Bottom
+
+4. 
+    ```
+    length [1, 2, undefined]
+    ```
+    A: Will return 3
+
+5.
+    ```
+    length $ [1, 2, 3] ++ undefined
+    ```
+    A: Bottom
+6.
+    ```
+    take 1 $ filter even [1, 2, 3, undefined]
+    ```
+    A: Will return [2]
+
+7.
+    ```
+    take 1 $ filter even [1, 3, undefined]
+    ```
+    A: Bottom
+
+8.
+    ```
+    take 1 $ filter odd [1, 3, undefined]
+    ```
+    A: Will return [1]
+
+9.
+    ```
+    take 2 $ filter odd [1, 3, undefined]
+    ```
+    A: Will return [1, 3]
+
+10
+    ```
+    take 3 $ filter odd [1, 3, undefined]
+    ```
+    A: Bottom
+
+### Intermission: Is it in normal form?
+
+For each expression below, determine whether it’s in:
+1. normal form, which implies weak head normal form;
+
+2. weak head normal form only; or,
+
+3. neither.
+
+Questions:
+1. `[1, 2, 3, 4, 5]`
+    A: normal form
+
+2. `1 : 2 : 3 : 4 : _[]]`
+    A: weak head normal form
+
+3. `enumFromTo 1 10`
+    A: neither
+
+4. `length [1, 2, 3, 4, 5]`
+    A: neither
+
+5. `sum (enumFromTo 1 10)`
+    A: neither
+
+6. `['a'..'m'] ++ ['n'..'z']`
+    A: neither
+
+7. `(_, 'b')`
+    A: weak normal form
+
+
+## Exercises: More Bottoms
+1. Will the following expression return a value or be ⊥?
+    ```
+    take 1 $ map (+1) [undefined, 2, 3]
+    ```
+    A: ⊥
+
+2. Will the following expression return a value?
+    ```
+    take 1 $ map (+1) [1, undefined, 3]
+    ```
+    A: Will return [1]
+
+3. Will the following expression return a value?
+    ```
+    take 2 $ map (+1) [1, undefined, 3]
+    ```
+    A: ⊥
+
+4. What does the following mystery function do? What is its type? Describe it (to 
+yourself or a loved one) in standard English and then test it out in the REPL to make 
+sure you were correct.
+    ```
+    itIsMystery xs = map (\x -> elem x "aeiou") xs
+    ```
+
+5. What will be the result of the following functions:
+
+    a.  ```map (^2) [1..10]```
+
+       [1,4,9,16,25,36,49,64,81,100]
+
+    b.
+        ```
+        map minimum [[1..10], [10..20], [20..30]]
+        -- n.b. `minimum` is not the same function
+        -- as the `min` that we used before
+        ```
+
+        [1,10,20]
+
+    c.  ```map sum [[1..5], [1..5], [1..5]] ```
+
+        [15,15,15]
+
+6. Back in chapter 7, you wrote a function called foldBool. That function exists in a 
+module known as Data.Bool and is called bool. Write a function that does the same (or 
+similar, if you wish) as the map (if-then-else) function you saw above but uses bool 
+instead of the if-then-else syntax. Your first step should be bringing the bool function 
+into scope by typing import Data.Bool at your Prelude prompt.
+    ```
+    import Data.Bool (foldBool)
+
+    negateThree :: Real n => [n] -> [n]
+    negateThree = map (\x -> bool x (-3) (x==3))
+    ```
+
+
+## Exercises: Filtering
+
+1.
+    Given the above, how might we write a filter function that would give us all the 
+    multiples of 3 out of a list from 1-30?
+    ```
+    filter ((==0) . flip mod 3) [1..30]
+    ```
+
+2.
+    Recalling what we learned about function composition, how could we compose the above 
+    function with the length function to tell us *how many* multiples of 3 there are
+    between 1 and 30?
+    ```
+    length $ filter ((==0) . flip mod 3) [1..30]
+    ```
+
+3.
+    Next we’re going to work on removing all articles (’the’, ’a’, and ’an’) from 
+    sentences. You want to get to something that works like this: 
+    ```
+    Prelude> myFilter "the brown dog was a goof"
+    ["brown","dog","was","goof"]
+    ```
+    You may recall that earlier in this chapter we asked you to write a function that 
+    separates a string into a list ofstrings by separating them at spaces. That is a 
+    standard library function called words. You may consider starting this exercise by 
+    using words (or your version, of course).
+    ```
+    filter (not . flip elem ["the", "a", "an"]) . words
+    ```
+
+
+## Zipping exercises
+
+1.
+    Write your own version of zip and ensure it behaves the same as the original.
+    ```
+    zip :: [a] -> [b] -> [(a, b)]
+    zip = undefined
+    ```
+    A:
+    ```
+    zip :: [a] -> [b] -> [(a, b)]
+    zip _ [] = []
+    zip [] _ = []
+    zip (x:xs) (y:ys) = (x, y) : myzip xs ys
+    ```
+
+2.
+    Do what you did for zip, but now for zipWith:
+    ```
+    zipWith :: (a -> b -> c) -> [a] -> [b] -> [c]
+    zipWith = undefined
+    ```
+    A:
+    ```
+    zipWith :: (a -> b -> c) -> [a] -> [b] -> [c]
+    zipWith _ _ [] = []
+    zipWith _ [] _ = []
+    zipWith f (x:xs) (y:ys) = f x y : zipWith f xs ys
+    ```
+
+3. Rewrite your zip in terms of the zipWith you wrote.
+    ```
+    zip :: [a] -> [b] -> [(a, b)]
+    zip = zipWith (,)
+    ```
