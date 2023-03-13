@@ -133,60 +133,60 @@ Will the following expressions return a value or be ⊥?
     ```
     [x^y | x <- [1..5], y <- [2, undefined]]
     ```
-    A: Bottom
+    A: ⊥
 
 2. 
     ```
     take 1 $ [x^y | x <- [1..5], y <- [2, undefined]]
     ```
-    A: Will return [1]
+    A: Will return `[1]`
 
 3. 
     ```
     sum [1, undefined, 3]
     ```
-    A: Bottom
+    A: ⊥
 
 4. 
     ```
     length [1, 2, undefined]
     ```
-    A: Will return 3
+    A: Will return `3`
 
 5.
     ```
     length $ [1, 2, 3] ++ undefined
     ```
-    A: Bottom
+    A: ⊥
 6.
     ```
     take 1 $ filter even [1, 2, 3, undefined]
     ```
-    A: Will return [2]
+    A: Will return `[2]`
 
 7.
     ```
     take 1 $ filter even [1, 3, undefined]
     ```
-    A: Bottom
+    A: ⊥
 
 8.
     ```
     take 1 $ filter odd [1, 3, undefined]
     ```
-    A: Will return [1]
+    A: Will return `[1]`
 
 9.
     ```
     take 2 $ filter odd [1, 3, undefined]
     ```
-    A: Will return [1, 3]
+    A: Will return `[1, 3]`
 
 10
     ```
     take 3 $ filter odd [1, 3, undefined]
     ```
-    A: Bottom
+    A: ⊥
 
 ### Intermission: Is it in normal form?
 
@@ -198,57 +198,69 @@ For each expression below, determine whether it’s in:
 3. neither.
 
 Questions:
-1. `[1, 2, 3, 4, 5]`
+1.
+    `[1, 2, 3, 4, 5]`
     A: normal form
 
-2. `1 : 2 : 3 : 4 : _[]]`
+2.
+    `1 : 2 : 3 : 4 : _[]]`
     A: weak head normal form
 
-3. `enumFromTo 1 10`
+3.
+    `enumFromTo 1 10`
     A: neither
 
-4. `length [1, 2, 3, 4, 5]`
+4.
+    `length [1, 2, 3, 4, 5]`
     A: neither
 
-5. `sum (enumFromTo 1 10)`
+5.
+    `sum (enumFromTo 1 10)`
     A: neither
 
-6. `['a'..'m'] ++ ['n'..'z']`
+6.
+    `['a'..'m'] ++ ['n'..'z']`
     A: neither
 
-7. `(_, 'b')`
+7.
+    `(_, 'b')`
     A: weak normal form
 
 
 ## Exercises: More Bottoms
-1. Will the following expression return a value or be ⊥?
+
+1.
+    Will the following expression return a value or be ⊥?
     ```
     take 1 $ map (+1) [undefined, 2, 3]
     ```
     A: ⊥
 
-2. Will the following expression return a value?
+2.
+    Will the following expression return a value?
     ```
     take 1 $ map (+1) [1, undefined, 3]
     ```
-    A: Will return [1]
+    A: Will return `[1]`
 
-3. Will the following expression return a value?
+3.
+    Will the following expression return a value?
     ```
     take 2 $ map (+1) [1, undefined, 3]
     ```
     A: ⊥
 
-4. What does the following mystery function do? What is its type? Describe it (to 
-yourself or a loved one) in standard English and then test it out in the REPL to make 
-sure you were correct.
+4.
+    What does the following mystery function do? What is its type? Describe it (to 
+    yourself or a loved one) in standard English and then test it out in the REPL to make 
+    sure you were correct.
     ```
     itIsMystery xs = map (\x -> elem x "aeiou") xs
     ```
 
 5. What will be the result of the following functions:
 
-    a.  ```map (^2) [1..10]```
+    a. ```map (^2) [1..10]```
 
        [1,4,9,16,25,36,49,64,81,100]
 
@@ -265,11 +277,12 @@ sure you were correct.
 
         [15,15,15]
 
-6. Back in chapter 7, you wrote a function called foldBool. That function exists in a 
-module known as Data.Bool and is called bool. Write a function that does the same (or 
-similar, if you wish) as the map (if-then-else) function you saw above but uses bool 
-instead of the if-then-else syntax. Your first step should be bringing the bool function 
-into scope by typing import Data.Bool at your Prelude prompt.
+6.
+    Back in chapter 7, you wrote a function called foldBool. That function exists in a 
+    module known as Data.Bool and is called bool. Write a function that does the same (or 
+    similar, if you wish) as the map (if-then-else) function you saw above but uses bool 
+    instead of the if-then-else syntax. Your first step should be bringing the bool 
+    function into scope by typing import Data.Bool at your Prelude prompt.
     ```
     import Data.Bool (foldBool)
 
@@ -345,4 +358,151 @@ into scope by typing import Data.Bool at your Prelude prompt.
     ```
     zip :: [a] -> [b] -> [(a, b)]
     zip = zipWith (,)
+    ```
+
+
+## Chapter Exercises
+
+### Data.Char
+
+1.
+    ```
+    :t isUpper
+    isUpper :: Char -> Bool
+
+    :t toUpper
+    toUpper :: Char -> Char
+    ```
+
+2.
+    ```
+    filter isUpper
+    ```
+
+3.
+    ```
+    capitalize :: String -> String
+    capitalize text = toUpper (head text) : tail text
+    ```
+
+4.
+    ```
+    upperCase :: String -> String
+    upperCase "" = ""
+    upperCase (c:cs) = toUpper c : upperCase cs
+    ```
+
+5.
+    ```
+    :t head
+    head: [a] -> a
+
+    toUpperFst :: String -> Char
+    toUpperFst string = toUpper (head string) 
+    ```
+
+6.
+    ```
+    toUpperFst :: String -> Char
+    toUpperFst = toUpper . head
+    ```
+
+
+### Ciphers
+
+```
+import Data.Char
+
+
+_ASCIIa = ord 'a'
+_NUMLETTERS = ord 'z' - _ASCIIa + 1
+
+ceasar :: Char -> Int -> Char
+ceasar letter shift = chr $ _ASCIIa + (ord letter + shift - _ASCIIa) `mod` _NUMLETTERS
+```
+
+### Writing your own standard functions
+
+1.
+    ```
+    myOr :: [Bool] -> Bool
+    myOr [] = False
+    myOr (x:xs) = x || myOr xs
+    ```
+
+2.
+    ```
+    myAny :: (a -> Bool) -> [a] -> Bool
+    myAny _ [] = False
+    myAny predicate (x:xs) = predicate x || (myAny predicate xs)
+    ```
+
+3.
+    ```
+    myElem :: Eq a => a -> [a] -> Bool
+    myElem _ [] = False
+    myElem a (x:xs) = a == x || myElem a xs
+
+    myElem1 :: Eq a => a -> [a] -> Bool
+    myElem1 a xs = any (==a) xs
+    ```
+
+4.
+    ```
+    myReverse :: [a] -> [a]
+    myReverse [] = []
+    myReverse (x:xs) = myReverse xs ++ [x]
+    ```
+
+5.
+    ```
+    squish :: [[a]] -> [a]
+    squish [] = []
+    squish (x:xs) = x ++ squish xs
+    ```
+
+6.
+    ```
+    squishMap :: (a -> [b]) -> [a] -> [b]
+    squishMap _ [] = []
+    squishMap f (x:xs) = f x ++ squishMap f xs
+    ```
+
+7.
+    ```
+    squishAgain :: [[a]] -> [a]
+    squishAgain = squishMap (id)
+    ```
+
+8.
+    ```
+    myMaximumBy :: Ord a => (a -> a -> Ordering) -> [a] -> a
+    myMaximumBy f l = go f l (head l)
+        where
+            go comparator (x:xs) max 
+                | xs == [] = max
+                | otherwise = case comparator x max of
+                    GT -> go comparator xs x
+                    _ -> go comparator xs max
+    ```
+
+9.
+    ```
+    myMinimumBy :: Ord a => (a -> a -> Ordering) -> [a] -> a
+    myMinimumBy f (x:xs) = go f (x:xs) x
+        where
+            go comparator (x:xs) min
+                | xs == [] = min
+                | otherwise = case comparator x min of
+                    LT -> go comparator xs x
+                    _ -> go comparator xs min
+    ```
+
+10.
+    ```
+    myMaximum :: Ord a => [a] -> a
+    myMaximum = myMaximumBy compare
+
+    myMinimum :: Ord a => [a] -> a
+    myMinimum = myMinimumBy compare
     ```
