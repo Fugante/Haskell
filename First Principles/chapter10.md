@@ -223,4 +223,60 @@ fibsN x = fibs !! x
 
 4.
     ```
+    myReverse :: [a] -> [a]
+    myReverse = foldr (\a acc -> acc ++ [a]) []
+    ```
+
+5.
+    ```
+    myMap :: (a -> b) -> [a] -> [b]
+    myMap f = foldr (\a acc -> f a : acc) []
+    ```
+
+6.
+    ```
+    myFilter :: (a -> Bool) -> [a] -> [a]
+    myFilter p = foldr go []
+        where
+            go a acc
+                | p a = a : acc
+                | otherwise = acc
+    ```
+
+7.
+    ```
+    squish :: [[a]] -> [a]
+    squish = foldr (++) []
+    ```
+
+8.
+    ```
+    squishMap :: (a -> [b]) -> [a] -> [b] 
+    squishMap f = foldr (\a acc -> f a ++ acc) []
+    ```
+
+9.
+    ```
+    squishAgain :: [[a]] -> [a]
+    squishAgain = squishMap id
+    ```
+
+10.
+    ```
+    myMaximumBy :: (a -> a -> Ordering) -> [a] -> a
+    myMaximumBy f (x:xs) = foldl go x (x:xs)
+        where
+            go acc a = case f acc a of
+                GT -> acc
+                _ -> a
+    ```
+
+11.
+    ```
+    myMinimumBy :: (a -> a -> Ordering) -> [a] -> a
+    myMinimumBy f (x:xs) = foldl go x (x:xs)
+        where
+            go acc a = case f acc a of
+                LT -> acc
+                _ -> a
     ```
