@@ -132,5 +132,95 @@ theDatabase =
 
 ## Scans Exercises
 
+```
 fibs = 1 : scanl (+) 1 fibs
 fibsN x = fibs !! x
+```
+
+1.
+    ```
+    fibs20 :: [Integer]
+    fibs20 = take 20 $ 1 : scanl (+) 1 fibs
+    ```
+
+2.
+    ```
+    fibsLT100 :: [Integer]
+    fibsLT100 = [x | x <- fibs, x < 100]
+    ```
+
+3.
+    ```
+    factorial :: [Integer]
+    factorial = scanl (*) 1 [2..]
+    ```
+
+
+## Chapter Exercises
+
+### Warm-up and Review
+
+1.
+    ```
+    stops  = "pbtdkg"
+    vowels = "aeiou"
+    ```
+
+    a.
+    ```
+    stopVowelStop = [(s, v, s') | s <- stops, v <- vowels, s' <- stops]
+    ```
+
+    b.
+    ```
+    stopVowelsStop' = [('p', v, s') | v <- vowels, s' <- stops]
+    ```
+
+    c.
+    ```
+    nounVerbNoun :: [String] -> [String] -> [String]
+    nounVerbNoun nouns verbs = [n ++ v ++ n' | n <- nouns, v <- verbs, n' <- nouns]
+    ```
+
+2.
+    ```
+    seekritFunc x = div (sum (map length (words x))) (length (words x))
+    ```
+    Gives the ratio of letters to words in a sentence.
+
+3.
+    ```
+    seekritFunc' :: Fractional a => String -> a
+    seekritFunc' x = y / z
+        where y = fromIntegral $ sum $ map length $ words x
+            z = fromIntegral $ length $ words x
+    ```
+
+### Rewriting functions using folds
+
+1.
+    ```
+    myOr :: [Bool] -> Bool
+    myOr = foldr (||) False
+    ```
+
+2.
+    ```
+    myAny :: (a -> Bool) -> [a] -> Bool
+    myAny f = myOr . map f
+    ```
+
+3.
+    ```
+    myElem :: Eq a => a -> [a] -> Bool
+    myElem a = foldr go False
+        where
+            go x acc = acc || a == x
+
+    myElem' :: Eq a => a -> [a] -> Bool
+    myElem' a = any (a==)
+    ```
+
+4.
+    ```
+    ```
