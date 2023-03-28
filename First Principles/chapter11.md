@@ -83,3 +83,35 @@ doge = Plane PapuAi
     isPlane' (Plane' _ _) = True
     isPlane' _ = False
     ```
+
+
+## Exercises: Cardinality
+
+1. 1
+
+2. 3
+
+3. 65,536
+
+4. The cardinality of `Int` is 18,446,744,073,709,551,616. `Integer` is unbounded.
+
+5. 2^8 = 256
+
+
+## Exercises: For Example
+
+```haskell
+data Example = MakeExample deriving Show
+```
+
+1. The type of `MakeExample` is `Example`. An error is raised when trying to evaluate the 
+type of `MakeExample`.
+
+2. Yes, you can see the instances of `Example` by using `:info Example`. In this case 
+there is an instance for `Show`.
+
+3. 
+    ```haskell
+    data Example' = MakeExample' Int deriving Show
+    ```
+    The type of `MakeExample'` is `Int -> Example'`. The type of `MakeExample' 1` is `Example'`.
