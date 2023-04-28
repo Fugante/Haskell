@@ -386,7 +386,7 @@ encrypt key text = _encryptText (toLowercase key) (toLowercase text)
 ```
 
 
-## As-patterns
+### As-patterns
 
 1.
     ```haskell
@@ -408,7 +408,7 @@ encrypt key text = _encryptText (toLowercase key) (toLowercase text)
     ```
 
 
-## Language exercises
+### Language exercises
 
 1.
     ```haskell
@@ -429,4 +429,27 @@ encrypt key text = _encryptText (toLowercase key) (toLowercase text)
             f word sentence
                 | last sentence == '.' = sentence ++ ' ' : capitalizeWord word
                 | otherwise = sentence ++ ' ' : word
+    ```
+
+### Phone exercise
+
+TODO
+
+### Hutton’s Razor
+
+```haskell
+data Expr = Lit Integer | Add Expr Expr
+```
+
+1.
+    ```haskell
+    eval :: Expr -> Integer
+    eval (Lit integer) = integer
+    eval (Add expr1 expr2) = eval expr1 + eval expr2
+    ```
+2.
+    ```haskell
+    printExpr :: Expr -> String
+    printExpr (Lit integer) = show integer
+    printExpr (Add expr1 expr2) = printExpr expr1 ++ " + " ++ printExpr expr2
     ```
