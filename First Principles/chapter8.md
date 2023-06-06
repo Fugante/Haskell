@@ -2,7 +2,7 @@
 
 ## Intermission: Excersice
 
-```
+```haskell
 applyTimes :: (Eq a, Num a) => a -> (b -> b) -> b -> b
 applyTimes 0 f b = b
 applyTimes n f b = f (applyTimes (n - 1) f b)
@@ -53,7 +53,7 @@ applyTimes' n f b = f . applyTimes (n - 1) f $ b
 
 ### Reviewing currying
 
-```
+```haskell
 cattyConny :: String -> String -> String
 cattyConny x y = x ++ " mrow " ++ y
 
@@ -86,7 +86,7 @@ frappe = flippy "haha"
 ### Recursion
 
 1.
-    ```
+    ```haskell
     dividedBy :: Integral a => a -> a -> (a, a)
     dividedBy num denom = go num denom 0
         where go n d count
@@ -107,7 +107,7 @@ frappe = flippy "haha"
     ```
 
 2.
-    ```
+    ```haskell
     summatory :: (Eq a, Num a) a => a -> a
     summatory num = go num 0
         where go n c
@@ -116,7 +116,7 @@ frappe = flippy "haha"
     ```
 
 3.
-    ```
+    ```haskell
     recMult :: Integral a => a -> a -> a
     recMult m n = go n m 0
     where go a b c
@@ -127,7 +127,7 @@ frappe = flippy "haha"
 
 ### Fixing dividedBy
 
-```
+```haskell
 data DividedResult = Result Integer | DividedByZero deriving Show
 
 dividedBy :: Integral a => a -> a -> DividedResult
@@ -141,7 +141,7 @@ dividedBy num denom = go num denom 0
 
 ### McCarthy 91 function
 
-```
+```haskell
 mc91 :: (Num a, Ord a) => a -> a
 mc91 n
     | n > 100 = n - 10
@@ -151,7 +151,7 @@ mc91 n
 
 ### Numbers into words
 
-```
+```haskell
 module WordNumber where
 
 import Data.List (intersperse)
