@@ -9,7 +9,7 @@
     c. `foldl (flip (*)) 1 [1..5]`
 
 2. `foldl (flip (*)) 1 [1..3]`
-    ```
+    ```haskell
     foldl (flip (*)) 1 [1..3]
     foldl(flip (*)) 1 [1,2,3]
     foldl (flip (*)) (1*1) [2,3]
@@ -62,7 +62,7 @@ at least one error. Please fix them and test in your REPL:
 
 ## Exercises: Database Processing
 
-```
+```haskell
 import Data.Time
 
 
@@ -83,7 +83,7 @@ theDatabase =
 ```
 
 1.
-    ```
+    ```haskell
     filterDbDate :: [DatabaseItem] -> [UTCTime]
     filterDbDate = foldr go []
         where
@@ -93,7 +93,7 @@ theDatabase =
     ```
 
 2.
-    ```
+    ```haskell
     filterDbNumber :: [DatabaseItem] -> [Integer]
     filterDbNumber = foldr go []
         where
@@ -103,7 +103,7 @@ theDatabase =
     ```
 
 3.
-    ```
+    ```haskell
     mostRecent :: [DatabaseItem] -> UTCTime
     mostRecent = foldr go farest . filterDbDate
         where
@@ -112,13 +112,13 @@ theDatabase =
     ```
 
 4.
-    ```
+    ```haskell
     sumDb :: [DatabaseItem] -> Integer
     sumDb = sum . filterDbNumber
     ```
 
 5.
-    ```
+    ```haskell
     avgDb :: [DatabaseItem] -> Double
     avgDb = avg . filterDbNumber
         where
@@ -132,25 +132,25 @@ theDatabase =
 
 ## Scans Exercises
 
-```
+```haskell
 fibs = 1 : scanl (+) 1 fibs
 fibsN x = fibs !! x
 ```
 
 1.
-    ```
+    ```haskell
     fibs20 :: [Integer]
     fibs20 = take 20 $ 1 : scanl (+) 1 fibs
     ```
 
 2.
-    ```
+    ```haskell
     fibsLT100 :: [Integer]
     fibsLT100 = [x | x <- fibs, x < 100]
     ```
 
 3.
-    ```
+    ```haskell
     factorial :: [Integer]
     factorial = scanl (*) 1 [2..]
     ```
@@ -161,35 +161,35 @@ fibsN x = fibs !! x
 ### Warm-up and Review
 
 1.
-    ```
+    ```haskell
     stops  = "pbtdkg"
     vowels = "aeiou"
     ```
 
     a.
-    ```
+    ```haskell
     stopVowelStop = [(s, v, s') | s <- stops, v <- vowels, s' <- stops]
     ```
 
     b.
-    ```
+    ```haskell
     stopVowelsStop' = [('p', v, s') | v <- vowels, s' <- stops]
     ```
 
     c.
-    ```
+    ```haskell
     nounVerbNoun :: [String] -> [String] -> [String]
     nounVerbNoun nouns verbs = [n ++ v ++ n' | n <- nouns, v <- verbs, n' <- nouns]
     ```
 
 2.
-    ```
+    ```haskell
     seekritFunc x = div (sum (map length (words x))) (length (words x))
     ```
     Gives the ratio of letters to words in a sentence.
 
 3.
-    ```
+    ```haskell
     seekritFunc' :: Fractional a => String -> a
     seekritFunc' x = y / z
         where y = fromIntegral $ sum $ map length $ words x
@@ -199,19 +199,19 @@ fibsN x = fibs !! x
 ### Rewriting functions using folds
 
 1.
-    ```
+    ```haskell
     myOr :: [Bool] -> Bool
     myOr = foldr (||) False
     ```
 
 2.
-    ```
+    ```haskell
     myAny :: (a -> Bool) -> [a] -> Bool
     myAny f = myOr . map f
     ```
 
 3.
-    ```
+    ```haskell
     myElem :: Eq a => a -> [a] -> Bool
     myElem a = foldr go False
         where
@@ -222,19 +222,19 @@ fibsN x = fibs !! x
     ```
 
 4.
-    ```
+    ```haskell
     myReverse :: [a] -> [a]
     myReverse = foldr (\a acc -> acc ++ [a]) []
     ```
 
 5.
-    ```
+    ```haskell
     myMap :: (a -> b) -> [a] -> [b]
     myMap f = foldr (\a acc -> f a : acc) []
     ```
 
 6.
-    ```
+    ```haskell
     myFilter :: (a -> Bool) -> [a] -> [a]
     myFilter p = foldr go []
         where
@@ -244,25 +244,25 @@ fibsN x = fibs !! x
     ```
 
 7.
-    ```
+    ```haskell
     squish :: [[a]] -> [a]
     squish = foldr (++) []
     ```
 
 8.
-    ```
+    ```haskell
     squishMap :: (a -> [b]) -> [a] -> [b] 
     squishMap f = foldr (\a acc -> f a ++ acc) []
     ```
 
 9.
-    ```
+    ```haskell
     squishAgain :: [[a]] -> [a]
     squishAgain = squishMap id
     ```
 
 10.
-    ```
+    ```haskell
     myMaximumBy :: (a -> a -> Ordering) -> [a] -> a
     myMaximumBy f (x:xs) = foldl go x (x:xs)
         where
@@ -272,7 +272,7 @@ fibsN x = fibs !! x
     ```
 
 11.
-    ```
+    ```haskell
     myMinimumBy :: (a -> a -> Ordering) -> [a] -> a
     myMinimumBy f (x:xs) = foldl go x (x:xs)
         where

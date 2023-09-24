@@ -7,18 +7,20 @@
 2. d) `Num a => a -> a -> a`
 
 3.
-+ a
-    ```
+    a.
+    ```haskell
     f n = n + 1
     \n -> n + 1`
     ```
-+ b
-    ```
+
+    b.
+    ```haskell
     addFive x y = (if x > y then y else x) + 5
     \x -> \y -> (if x > y then y else x) + 5
     ```
-+ c
-    ```
+
+    c.
+    ```haskell
     mflip f = \x -> \y -> f y x
     mflip f x y = f y x
     ```
@@ -26,39 +28,56 @@
 
 ## Variety pack
 
-1.      k (x, y) = x
-        k1 = k ((4 - 1), 10)
-        k2 = k ("three", (1 + 2))
-        k3 = k (3, True)
-    * a. `k :: (a, b) -> a`
-    * b. `k2 :: [Char]`. It's different to k1 and k3.
-    * c. k1 and k3.
+1.
+    ```haskell
+    k (x, y) = x
+    k1 = k ((4 - 1), 10)
+    k2 = k ("three", (1 + 2))
+    k3 = k (3, True)
+    ```
 
-2.      f :: (a, b, c) -> (d, e, f) -> ((a, d), (c, f))
-        f (a, b, c) (d, e, f) = ((a, d), (c, f))
+    a. `k :: (a, b) -> a`
+    
+    b. `k2 :: [Char]`. It's different to k1 and k3.
+    
+    c. k1 and k3.
 
+2.
+    ```haskell
+    f :: (a, b, c) -> (d, e, f) -> ((a, d), (c, f))
+    f (a, b, c) (d, e, f) = ((a, d), (c, f))
+    ```
 
 ## Case practice
 
-1.      functionC x y = if (x > y) then x else y
-        functionC' x y = case (x > y) of
-            True -> x
-            False -> y
+1.      
+    ```haskell
+    functionC x y = if (x > y) then x else y
+    functionC' x y = case (x > y) of
+        True -> x
+        False -> y
+    ```
 
-2.      ifEvenAdd2 n = if even n then (n + 2) else n
-        ifEvenAdd2' n = case even n of
-            True -> n + 2
-            False -> n
+2.      
+    ```haskell
+    ifEvenAdd2 n = if even n then (n + 2) else n
+    ifEvenAdd2' n = case even n of
+        True -> n + 2
+        False -> n
+    ```
 
-3.      nums x = case compare x 0 of
-            LT -> -1
-            GT -> 1
-            EQ -> 0
+3.
+    ```haskell
+    nums x = case compare x 0 of
+        LT -> -1
+        GT -> 1
+        EQ -> 0
+    ```
 
 
 ## Artful Dodgy
 
-```
+```haskell
 dodgy :: Num a => a -> a -> a
 dodgy x y  = x + y * 10
 
@@ -69,32 +88,64 @@ oneIsTwo :: Num a => a -> a
 oneIsTwo = (flip dodgy) 2
 ```
 
-1.      dodgy 1 0   -- 1
+1.
+    ```haskell
+    dodgy 1 0   -- 1
+    ```
 
-2.      dodgy 1 1   -- 11
+2.
+    ```haskell
+    dodgy 1 1   -- 11
+    ```
 
-3.      dodgy 2 2   -- 22
+3.
+    ```haskell
+    dodgy 2 2   -- 22
+    ```
 
-4.      dodgy 1 2   -- 21
+4.
+    ```haskell
+    dodgy 1 2   -- 21
+    ```
 
-5.      dodgy 2 1   -- 12
+5.
+    ```haskell
+    dodgy 2 1   -- 12
+    ```
 
-6.      oneIsOne 1  -- 11
+6.
+    ```haskell
+    oneIsOne 1  -- 11
+    ```
 
-7.      oneIsOne 2  -- 21
+7.
+    ```haskell
+    oneIsOne 2  -- 21
+    ```
 
-8.      oneIsTwo 1  -- 21
+8.
+    ```haskell
+    oneIsTwo 1  -- 21
+    ```
 
-9.      oneIsTwo 2  -- 22
+9.
+    ```haskell
+    oneIsTwo 2  -- 22
+    ```
 
-10.     oneIsOne 3  -- 31
+10.
+    ```haskell
+    oneIsOne 3  -- 31
+    ```
 
-11.     oneIsTwo 3  -- 23
-
+11.
+    ```haskell
+    oneIsTwo 3  -- 23
+    ```
 
 ## Guard duty
 
-```
+```haskell
 avgGrade :: (Fractional a, Ord a) => a -> Char
 avgGrade x
     | y >= 0.9 = 'A'
@@ -143,7 +194,7 @@ avgGrade x
     b) is a higher order function
 
 5. Given the following `f`, what is the type of `f True`?
-    ```
+    ```haskell
     f :: a -> a
     f x = x
     ```
@@ -152,49 +203,67 @@ avgGrade x
 
 ### Let's write code
 
-1.      tensDigit :: Integral a => a -> a
-        tensDigit x = d 
-            where xLast = x `div` 10
-                  d = xLast `mod` 10
+1.
+    ```haskell
+    tensDigit :: Integral a => a -> a
+    tensDigit x = d 
+        where xLast = x `div` 10
+                d = xLast `mod` 10
+    ```
+    
+    a.
+    ```haskell
+    tensDigit x = (fst (divMod x 10)) `mod` 10
+    ```
 
-    * a.
-        ```
-        tensDigit x = (fst (divMod x 10)) `mod` 10
-        ```
+    b. Yes
 
-    * b. Yes
+    c. 
+    ```haskell
+    hunsD = (`mod` 100) . (`div` 100)
+    ```
 
-    * c. 
-        ```
-        hunsD = (`mod` 100) . (`div` 100)
-        ```
+2.
+    ```haskell
+    foldBool :: a -> a -> Bool -> a
+    foldBool x y b = case b of
+        False -> x
+        True -> y
 
-2.      foldBool :: a -> a -> Bool -> a
-        foldBool x y b = case b of
-            False -> x
-            True -> y
+    foldBool2 :: a -> a -> Bool -> a
+    foldBool2 x y b
+        | b = y
+        | otherwise = x
 
-        foldBool2 :: a -> a -> Bool -> a
-        foldBool2 x y b
-            | b = y
-            | otherwise = x
+    foldBool3 :: a -> a -> Bool -> a
+    foldBool3 x _  False = x
+    foldBool3 _ y True = True
+    ```
 
-        foldBool3 :: a -> a -> Bool -> a
-        foldBool3 x _  False = x
-        foldBool3 _ y True = True
+3.
+    ```haskell
+    g :: (a -> b) -> (a, c) -> (b, c)
+    g f (a, c) = (f a, c)
+    ```
 
-3.      g :: (a -> b) -> (a, c) -> (b, c)
-        g f (a, c) = (f a, c)
+4.
+    ```haskell
+    roundTrip :: (Show a, Read a) => a -> a
+    roundTrip a = read (show a)
 
-4.      roundTrip :: (Show a, Read a) => a -> a
-        roundTrip a = read (show a)
+    main = do
+        print(roundTrip 4)
+        print(id 4)
+    ```
 
-        main = do
-            print(roundTrip 4)
-            print(id 4)
+5.
+    ```haskell
+    roundTrip :: (Show a, Read a) => a -> a
+    roundTrip = read . show
+    ```
 
-5.      roundTrip :: (Show a, Read a) => a -> a
-        roundTrip = read . show
-
-6.      roundTrip :: (Show a, Read b) => a -> b
-        roundTrip a = read (show a) :: Float
+6.
+    ```haskell
+    roundTrip :: (Show a, Read b) => a -> b
+    roundTrip a = read (show a) :: Float
+    ```
