@@ -58,6 +58,7 @@ eftChar a b = go a b []
             dropFstLine text = dropWhile (=='\n') $ dropWhile (/='\n') text
             takeFstLine text = takeWhile (/='\n') text
     ```
+
 3.
     ```haskell
     takeFst :: Char -> String -> String
@@ -80,27 +81,41 @@ eftChar a b = go a b []
 ```haskell
 mySqr = [x^2 | x <- [1..10]]
 ```
+
 1.
     ```haskell
     [x | x <- mySqr, rem x 2 == 0]
     ```
-    Result: [4, 16, 36, 64, 100]
+
+    Result:
+    ```haskell
+    [4, 16, 36, 64, 100]
+    ```
 
 2.
     ```haskell
     [(x, y) | x <- mySqr, y <- mySqr, x < 50, y > 50]
     ```
-    Result: [
+
+    Result:
+    ```haskell
+    [
         (1,64), (1,81), (1,100), (4,64), (4,81), (4,100),
         (9,64), (9,81), (9,100), (16,64), (16,81), (16,100),
         (25,64), (25,81), (25,100), (36, 64), (36,81), (36,100),
         (49,64), (49,81), (49,100)
     ]
+    ```
+
 3.
     ```haskell
     take 5 [ (x, y) | x <- mySqr, y <- mySqr, x < 50, y > 50 ]
     ```
-    Result: [(1,64), (1,81), (1,100), (4,64), (4,81)]
+
+    Result:
+    ```haskell
+    [(1,64), (1,81), (1,100), (4,64), (4,81)]
+    ```
 
 
 ## Exercises: Square Cube
@@ -109,6 +124,7 @@ mySqr = [x^2 | x <- [1..10]]
 mySqr = [x^2 | x <- [1..5]]
 myCube = [y^3 | y <- [1..5]]
 ```
+
 1.
     ```haskell
     [(x, y) | x <- mySqr, y <- myCube]
@@ -119,7 +135,7 @@ myCube = [y^3 | y <- [1..5]]
     ```
 3.
     ```haskell
-    lenght [(x, y) | x <- mySqr, y <- myCube, x < 50 && y < 50]
+    length [(x, y) | x <- mySqr, y <- myCube, x < 50 && y < 50]
     ```
 
 
@@ -135,19 +151,19 @@ Will the following expressions return a value or be ⊥?
     ```
     A: ⊥
 
-2. 
+2.
     ```haskell
     take 1 $ [x^y | x <- [1..5], y <- [2, undefined]]
     ```
     A: Will return `[1]`
 
-3. 
+3.
     ```haskell
     sum [1, undefined, 3]
     ```
     A: ⊥
 
-4. 
+4.
     ```haskell
     length [1, 2, undefined]
     ```
@@ -182,15 +198,17 @@ Will the following expressions return a value or be ⊥?
     ```
     A: Will return `[1, 3]`
 
-10
+10.
     ```haskell
     take 3 $ filter odd [1, 3, undefined]
     ```
     A: ⊥
 
-### Intermission: Is it in normal form?
 
+### Intermission: Is it in normal form?
+0
 For each expression below, determine whether it’s in:
+
 1. normal form, which implies weak head normal form;
 
 2. weak head normal form only; or,
@@ -198,94 +216,110 @@ For each expression below, determine whether it’s in:
 3. neither.
 
 Questions:
+
 1.
-    `[1, 2, 3, 4, 5]`
+    ```haskell
+    [1, 2, 3, 4, 5]
+    ```
+
     A: normal form
 
 2.
-    `1 : 2 : 3 : 4 : _[]]`
+    ```haskell
+    1 : 2 : 3 : 4 : _[]]
+    ```
+
     A: weak head normal form
 
 3.
-    `enumFromTo 1 10`
+    ```haskell
+    enumFromTo 1 10
+    ```
+
     A: neither
 
 4.
-    `length [1, 2, 3, 4, 5]`
+    ```haskell
+    length [1, 2, 3, 4, 5]
+    ```
+
     A: neither
 
 5.
-    `sum (enumFromTo 1 10)`
+    ```haskell
+    sum (enumFromTo 1 10)
+    ```
+
     A: neither
 
 6.
-    `['a'..'m'] ++ ['n'..'z']`
+    ```haskell
+    ['a'..'m'] ++ ['n'..'z']
+    ```
+
     A: neither
 
 7.
-    `(_, 'b')`
+    ```haskell
+    (_, 'b')
+    ```
+
     A: weak normal form
 
 
 ## Exercises: More Bottoms
 
 1.
-    Will the following expression return a value or be ⊥?
     ```haskell
     take 1 $ map (+1) [undefined, 2, 3]
     ```
+
     A: ⊥
 
 2.
-    Will the following expression return a value?
     ```haskell
     take 1 $ map (+1) [1, undefined, 3]
     ```
+
     A: Will return `[1]`
 
 3.
-    Will the following expression return a value?
     ```haskell
     take 2 $ map (+1) [1, undefined, 3]
     ```
+
     A: ⊥
 
 4.
-    What does the following mystery function do? What is its type? Describe it (to 
-    yourself or a loved one) in standard English and then test it out in the REPL to make 
-    sure you were correct.
     ```haskell
     itIsMystery xs = map (\x -> elem x "aeiou") xs
     ```
 
-5. What will be the result of the following functions:
-
+5.
     a.
     ```haskell
     map (^2) [1..10]
+
+    [1, 4, 9, 16, 25, 36, 49, 64, 81, 100]
     ```
-    [1,4,9,16,25,36,49,64,81,100]
 
     b.
     ```haskell
     map minimum [[1..10], [10..20], [20..30]]
     -- n.b. `minimum` is not the same function
     -- as the `min` that we used before
+
+    [1, 10, 20]
     ```
-    [1,10,20]
 
     c.
     ```haskell
     map sum [[1..5], [1..5], [1..5]]
+
+    [15, 15, 15]
     ```
-    [15,15,15]
 
 6.
-    Back in chapter 7, you wrote a function called foldBool. That function exists in a 
-    module known as Data.Bool and is called bool. Write a function that does the same (or 
-    similar, if you wish) as the map (if-then-else) function you saw above but uses bool 
-    instead of the if-then-else syntax. Your first step should be bringing the bool 
-    function into scope by typing import Data.Bool at your Prelude prompt.
     ```haskell
     import Data.Bool (foldBool)
 
@@ -297,32 +331,20 @@ Questions:
 ## Exercises: Filtering
 
 1.
-    Given the above, how might we write a filter function that would give us all the 
-    multiples of 3 out of a list from 1-30?
     ```haskell
     filter ((==0) . flip mod 3) [1..30]
     ```
 
 2.
-    Recalling what we learned about function composition, how could we compose the above 
-    function with the length function to tell us *how many* multiples of 3 there are
-    between 1 and 30?
     ```haskell
     length $ filter ((==0) . flip mod 3) [1..30]
     ```
 
 3.
-    Next we’re going to work on removing all articles (’the’, ’a’, and ’an’) from 
-    sentences. You want to get to something that works like this: 
     ```haskell
     Prelude> myFilter "the brown dog was a goof"
     ["brown","dog","was","goof"]
-    ```
-    You may recall that earlier in this chapter we asked you to write a function that 
-    separates a string into a list ofstrings by separating them at spaces. That is a 
-    standard library function called words. You may consider starting this exercise by 
-    using words (or your version, of course).
-    ```haskell
+
     filter (not . flip elem ["the", "a", "an"]) . words
     ```
 
@@ -330,12 +352,6 @@ Questions:
 ## Zipping exercises
 
 1.
-    Write your own version of zip and ensure it behaves the same as the original.
-    ```haskell
-    zip :: [a] -> [b] -> [(a, b)]
-    zip = undefined
-    ```
-    A:
     ```haskell
     zip :: [a] -> [b] -> [(a, b)]
     zip _ [] = []
@@ -343,13 +359,12 @@ Questions:
     zip (x:xs) (y:ys) = (x, y) : myzip xs ys
     ```
 
-2.
-    Do what you did for zip, but now for zipWith:
+2. Do what you did for zip, but now for zipWith:
+
     ```haskell
     zipWith :: (a -> b -> c) -> [a] -> [b] -> [c]
     zipWith = undefined
     ```
-    A:
     ```haskell
     zipWith :: (a -> b -> c) -> [a] -> [b] -> [c]
     zipWith _ _ [] = []
@@ -401,7 +416,7 @@ Questions:
     head: [a] -> a
 
     toUpperFst :: String -> Char
-    toUpperFst string = toUpper (head string) 
+    toUpperFst string = toUpper (head string)
     ```
 
 6.
@@ -413,7 +428,7 @@ Questions:
 
 ### Ciphers
 
-```
+```haskell
 import Data.Char
 
 
@@ -423,6 +438,7 @@ _NUMLETTERS = ord 'z' - _ASCIIa + 1
 ceasar :: Char -> Int -> Char
 ceasar letter shift = chr $ _ASCIIa + (ord letter + shift - _ASCIIa) `mod` _NUMLETTERS
 ```
+
 
 ### Writing your own standard functions
 
@@ -482,7 +498,7 @@ ceasar letter shift = chr $ _ASCIIa + (ord letter + shift - _ASCIIa) `mod` _NUML
     myMaximumBy :: Ord a => (a -> a -> Ordering) -> [a] -> a
     myMaximumBy f l = go f l (head l)
         where
-            go comparator (x:xs) max 
+            go comparator (x:xs) max
                 | xs == [] = max
                 | otherwise = case comparator x max of
                     GT -> go comparator xs x
