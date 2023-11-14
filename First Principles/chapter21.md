@@ -4,8 +4,6 @@
 
 ### Traversable instances
 
-**Traversable instances**
-
 ```haskell
 newtype Identity a = Identity a deriving (Eq, Ord, Show)
 
@@ -171,7 +169,7 @@ instance Traversable n => Traversable (S n) where
     traverse g (S n a) = S <$> traverse g n <*> g a
 ```
 
-**Instances for tree**
+### Instances for tree
 
 ```haskell
 data Tree a =
